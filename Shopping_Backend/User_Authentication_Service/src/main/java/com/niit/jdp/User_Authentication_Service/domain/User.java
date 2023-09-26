@@ -14,6 +14,6 @@ import javax.persistence.Id;
 public class User {
     @Id
     private String email;
-    private String firstName, lastName, password, role;
-    private long mobileNumber;
+    private String  password;
+
 }
