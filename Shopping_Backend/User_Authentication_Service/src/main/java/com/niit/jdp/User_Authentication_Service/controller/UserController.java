@@ -53,32 +53,7 @@ public class UserController {
     }
 
 
-    //    http://localhost:8088/user/guard/delete/vamshi2@gmail
-    @DeleteMapping("/guard/delete/{email}")
-    public ResponseEntity<?> deletesUser(@PathVariable String email) {
-        this.userService.deleteUserByEmail(email);
-        return new ResponseEntity<>("user deleted successfully", HttpStatus.OK);
-    }
 
 
-    //    http://localhost:8088/user/guard/update/vamshi2@gmail
-    @PutMapping("/guard/update/{email}")
-    public ResponseEntity<?> updatesUser(@RequestBody User user, @PathVariable String email) {
-        return new ResponseEntity<>(this.userService.updateUserByEmail(user, email), HttpStatus.OK);
-    }
-
-
-    //    http://localhost:8088/user/guard/all-emails
-    @GetMapping("/guard/all-emails")
-    public ResponseEntity<?> getsAllEmails() {
-        return new ResponseEntity<>(this.userService.getAllEmails(), HttpStatus.OK);
-    }
-
-
-    //    http://localhost:8088/user/guard/email/vamshi2@gmail
-    @GetMapping("/guard/email/{email}")
-    public ResponseEntity<?> getsUserByEmail(@PathVariable String email) throws UserNotFound {
-        return new ResponseEntity<>(this.userService.getUserByEmail(email), HttpStatus.OK);
-    }
 
 }
