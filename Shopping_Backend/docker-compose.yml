@@ -1,0 +1,82 @@
+version: '3.9'
+services:
+  mysqlService:
+    image: mysql:latest
+    container_name: mysqls
+    networks:
+      - song-network
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: root
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+
+  user-service:
+    image: userimage
+    container_name: usercontainers
+    build: User_Authentication_Service/
+    restart: always
+    networks:
+      - song-network
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mysqlService
+      - api-gateway
+
+  Song-service:
+    image: songimage
+    container_name: song-containers
+    build: Song_Service/
+    restart: always
+    networks:
+      - song-network
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mongoService
+      - rabbitmqService
+      - api-gateway
+
+  mongoService:
+    image: mongo
+    container_name: mongos
+    ports:
+      - "27017:27017"
+    networks:
+      - song-network
+
+  rabbitmqService:
+    image: rabbitmq:management
+    container_name: rabbitmq-containers
+    ports:
+      - "5672:15672"
+      - "15672:15672"
+    networks:
+      - song-network
+    restart: always
+
+  api-gateway:
+    container_name: api-gateways
+    build: APIGateWay_Service/
+    restart: always
+    networks:
+      - song-network
+    ports:
+      - "9005:9005"
+
+  eurekaservice:
+    container_name: spring-cloud-eurekas
+    build: Eureka_Service/
+    restart: always
+    networks:
+      - song-network
+    ports:
+      - "8761:8761"
+
+networks:
+  song-network:
+    name: song-network
+    driver: bridge
